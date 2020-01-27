@@ -1,5 +1,5 @@
 class Player {
-    constructor(ctx, gameWidth, gameHeight, keys) {
+    constructor(ctx, gameWidth, gameHeight, keys, framesCounter) {
 
         this.ctx = ctx;
         //sin uso yet:
@@ -18,7 +18,7 @@ class Player {
         this.posY = 0
 
         this.framesX = 8
-        this.framesY = 9
+        this.framesY = 8
         // this.dx = this.width/this.framesX;
 
         this.framesIndexX = 0
@@ -26,7 +26,8 @@ class Player {
 
         //orientation
         this.orientation = "UP"
-        this.velocity = 2
+        this.velocity = 15
+        this.eventListeners(framesCounter)
 
     }
 
@@ -43,74 +44,101 @@ class Player {
             this.width,
             this.height
         )
-        this.animateDown(framesCounter)
+
     }
 
-    eventListeners() {
+    eventListeners(framesCounter) {
         document.addEventListener("keydown", e => {
+            // debugger
             switch (e.keyCode) {
                 case this.keys.DOWN:
-                    if (this.orientation !== `DOWN`) {
-                        this.orientation = `DOWN`
-
-                    }
-
-                    if (this.posY <= this.gameHeight) {
-                        this.posY += this.velocity;
-                        console.log("DOWN!");
-                    }
-                    break;
+                    (this.orientation !== `DOWN`) && (this.orientation = `DOWN`)
+                    break
+                case this.keys.UP:
+                    (this.orientation !== `UP`) && (this.orientation = `UP`)
+                    break
+                case this.keys.LEFT:
+                    (this.orientation !== `LEFT`) && (this.orientation = `LEFT`)
+                    break
+                case this.keys.RIGHT:
+                    (this.orientation !== `RIGHT`) && (this.orientation = `RIGHT`)
+                    break
+                case this.keys.ATTACK:
+                    moveSword()
+                break
             }
-            this.animate(this.orientation)
-            this.moveDown()
+            this.animateMovement(this.orientation, framesCounter)
+            this.move(this.orientation)
+
         });
-    }
+    } // (this.orientation !== `DOWN`) ? this.orientation = `DOWN` : null
 
-    animate(framesCounter) {
-        this.framesIndexY = 1
+    animateMovement(orientation, framesCounter) {
         if (framesCounter % 10 === 0) {
-            this.framesIndexX++
-        }
-        if (this.framesIndexX >= this.framesX) {
-            this.framesIndexX = 0
-        }
+            switch (orientation) {
+                case "DOWN":
+                    this.framesIndexY = 0
+                    this.framesIndexX++
+                    if (this.framesIndexX >= this.framesX) {
+                        this.framesIndexX = 0
+                    }
+                    break
+                case "UP":
+                    this.framesIndexY = 1
+                    this.framesIndexX++
+                    if (this.framesIndexX >= this.framesX) {
+                        this.framesIndexX = 0
+                    }
+                    break
+                case "LEFT":
+                    this.framesIndexY = 2
+                    this.framesIndexX++
+                    if (this.framesIndexX >= 6) {
+                        this.framesIndexX = 0
+                    }
 
-
+                    break
+                case "RIGHT":
+                    this.framesIndexY = 3
+                    this.framesIndexX++
+                    if (this.framesIndexX >= 6) {
+                        this.framesIndexX = 0
+                    }
+                    break
+            }
+        }
     }
-
-
-
-
-    turnPlayer() {
-
-        switch (this.orientation) {
-            case "N":
-                this.orientation = "W";
-                break;
-            case "E":
-                this.orientation = "N";
-                break;
-            case "S":
-                this.orientation = "E";
-                break;
-            case "W":
-                this.orientation = "S";
-                break;
-        }
-    }
-
-
     move(orientation) {
+        switch (orientation) {
+            case "DOWN":
+                if (this.posY <= this.gameHeight - 50) {
+                    this.posY += this.velocity
+                    console.log("MOVING DOWN!")
+                }
+                //ternary: 
+                //(this.posY <= this.gameHeight) ? (this.posY += this.velocity) : null
+                break
+            case "UP": //change 0? to see character
+                // (this.posY >= 0) ? (this.posY -= this.velocity) : null
+                if (this.posY >= 0) {
+                    this.posY -= this.velocity
+                    console.log("MOVING UP!")
+                }
+                break
+            case "LEFT":
+                if (this.posX >= 0) {
+                    this.posX -= this.velocity
+                    console.log("MOVING LEFT!")
+                }
 
+                break
+            case "RIGHT":
+                if (this.posX <= this.gameHeight - 100) {
+                    this.posX += this.velocity
+                    console.log("MOVING RIGHT!")
+                }
 
-        this.posY += this.velocity
-
-
+                break
+        }
     }
-
-
-
-
-
-
 }

@@ -7,11 +7,11 @@ const game = {
     framesCounter: 0,
     keys: {
         //Arrow Keys
-        TOP:38,
-        LEFT: 37,
-        RIGHT: 39,
-        DOWN: 40,
-        ATTACK: 87, //"W" 
+        UP: 87,
+        DOWN: 83,
+        LEFT: 65,
+        RIGHT: 68,
+        ATTACK: 32,
     },
 
 
@@ -26,7 +26,7 @@ const game = {
         this.canvas.height = this.height
 
         this.start()
-       
+
 
 
 
@@ -40,22 +40,17 @@ const game = {
                 this.framesCounter = 0;
             }
             this.framesCounter++;
-    
+
             this.clear();
             this.drawAll();
-
-
-
-
-
 
         }, 1000 / this.FPS);
     },
 
     reset() {
         this.background = new Background(this.ctx, this.width, this.height)
-        
-        this.player = new Player(this.ctx,this.width,this.height,this.keys)
+
+        this.player = new Player(this.ctx, this.width, this.height, this.keys, this.framesCounter)
     },
     clear() {
         this.ctx.clearRect(0, 0, this.width, this.height);
@@ -64,16 +59,8 @@ const game = {
     drawAll() {
         this.background.draw()
         this.player.draw(this.framesCounter);
-        
-
-
-    }
 
 
 
-
-
-
-
-
+    },
 }
