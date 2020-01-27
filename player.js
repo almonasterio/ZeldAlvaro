@@ -25,7 +25,7 @@ class Player {
         this.framesIndexY = 0
 
         //orientation
-        this.orientation = "UP"
+        this.orientation = "DOWN"
         this.velocity = 15
         this.eventListeners(framesCounter)
 
@@ -55,32 +55,47 @@ class Player {
 
             switch (e.keyCode) {
                 case this.keys.ATTACK:
-                    console.log('attack');
+                    console.log('attack')
                     this.animateSword(this.orientation, framesCounter)
                     return
+
                 case this.keys.DOWN:
                     this.orientation = `DOWN`
                     break
                 case this.keys.UP:
-                    (this.orientation !== `UP`) && (this.orientation = `UP`)
+                    this.orientation = `UP`
                     break
                 case this.keys.LEFT:
-                    (this.orientation !== `LEFT`) && (this.orientation = `LEFT`)
+                    this.orientation = `LEFT`
                     break
                 case this.keys.RIGHT:
-                    (this.orientation !== `RIGHT`) && (this.orientation = `RIGHT`)
+                    this.orientation = `RIGHT`
                     break
-
             }
             this.animateMovement(this.orientation, framesCounter)
             this.move(this.orientation)
 
         });
 
+        document.addEventListener("onkeypress", e => {
+            if (e.keyCode == this.keys.ATTACK) {
 
 
-        
-    } // (this.orientation !== `DOWN`) ? this.orientation = `DOWN` : null
+            }
+        })
+
+        //   document.addEventListener("onkeypress", e => {
+        //       if (e.keyCode == this.keys.ATTACK) {
+        //           console.log('attack')
+        //           this.animateSword(this.orientation, framesCounter)
+
+        //       }
+        //   })
+
+
+
+
+    }
 
     animateMovement(orientation, framesCounter) {
         if (framesCounter % 10 === 0) {
@@ -152,7 +167,7 @@ class Player {
     }
 
     animateSword(orientation, framesCounter) {
-        console.log("in")
+
         if (framesCounter % 10 === 0) {
             switch (orientation) {
                 case "DOWN":
@@ -172,15 +187,15 @@ class Player {
                 case "LEFT":
                     this.framesIndexY = 6
                     this.framesIndexX++
-                    if (this.framesIndexX >= 6) {
+                    if (this.framesIndexX >= 5) {
                         this.framesIndexX = 0
                     }
-
                     break
                 case "RIGHT":
+                    console.log("in")
                     this.framesIndexY = 7
                     this.framesIndexX++
-                    if (this.framesIndexX >= 6) {
+                    if (this.framesIndexX >= 5) {
                         this.framesIndexX = 0
                     }
                     break
