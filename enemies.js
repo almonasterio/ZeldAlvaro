@@ -28,7 +28,7 @@ class Enemy {
         this.widthRdm = this.width * this.random(3, 2)
         this.heightRdm = this.height * this.random(3, 2)
     }
-    draw() {
+    draw(framesCounter) {
         this.ctx.drawImage(
             this.image,
             this.dx * Math.floor(this.image.width / this.framesX),
@@ -40,35 +40,42 @@ class Enemy {
             this.widthRdm,
             this.heightRdm
         )
+        this.animate(framesCounter)
 
     }
 
     random(max, min) {
         return Math.floor(Math.random() * (max - min) + min);
     }
-
     animate(framesCounter) {
-        console.log(this.posX)
         if (framesCounter % 30 === 0) {
-            (this.posX += this.velX * this.direction)
-        }
-        if (this.posX >= this.gameHeight - 100) {
-            (this.direction = -1)
-        }
-        if (this.posX <= 0) {
-            (this.direction = 1)
+            if (this.direction === 1) {
+                this.dy = 0
+                this.dx++
+                if (this.dx > this.framesX - 1) {
+                    this.dx = 0
+                }
+            } else if (this.direction === -1) {
+                this.dy = 1
+                this.dx++
+
+                if (this.dx > this.framesX - 1) {
+                    this.dx = 0
+                }
+            }
         }
     }
+
     move() {
-        // let random = random(this.gameHeight - 100, 0)
-        (this.posX += this.vel * this.direction*2)
-        if ((this.posX >= this.gameWidth - 100)) { //|| (this.PosX <random)) {
-        this.direction =-1
+
+        (this.posX += this.vel * this.direction * this.random(5, 1.5))
+        if ((this.posX >= this.gameWidth - 50)) { //|| (this.PosX <random)) { *Math.random()
+            this.direction = -1
         }
         if (this.posX <= 0) {
-        this.direction = 1
+            this.direction = 1
         }
-        
+
     }
 
 

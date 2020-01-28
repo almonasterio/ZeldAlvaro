@@ -37,8 +37,8 @@ const game = {
             }
             this.framesCounter++;
             this.clear();
-            this.drawAll();
-            this.moveAll(this.framesCounter)
+            this.drawAll(this.framesCounter);
+            this.moveAll()
         }, 1000 / this.FPS);
     },
 
@@ -51,10 +51,10 @@ const game = {
         this.ctx.clearRect(0, 0, this.width, this.height);
     },
 
-    drawAll() {
+    drawAll(framesCounter) {
         this.background.draw()
         this.player.draw();
-        this.enemy.draw();
+        this.enemy.draw(framesCounter);
     },
     moveAll(framesCounter) {
         this.enemy.move(framesCounter)
