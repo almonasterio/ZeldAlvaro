@@ -13,6 +13,8 @@ const game = {
         RIGHT: 68,
         ATTACK: 88, //32,
     },
+    enemiesArray: [],
+
 
 
     init() {
@@ -45,7 +47,9 @@ const game = {
     reset() {
         this.background = new Background(this.ctx, this.width, this.height)
         this.player = new Player(this.ctx, this.width, this.height, this.keys, this.framesCounter)
-        this.enemy = new Enemy(this.ctx, this.width, this.height, this.framesCounter)
+
+
+
     },
     clear() {
         this.ctx.clearRect(0, 0, this.width, this.height);
@@ -54,9 +58,17 @@ const game = {
     drawAll(framesCounter) {
         this.background.draw()
         this.player.draw();
-        this.enemy.draw(framesCounter);
+        this.generateEnemies(framesCounter)
+        this.enemiesArray.forEach(enemy => enemy.draw(framesCounter))
+
     },
     moveAll(framesCounter) {
-        this.enemy.move(framesCounter)
-    }
+        this.enemiesArray.forEach(enemy => enemy.move(framesCounter))
+    },
+    generateEnemies(framesCounter) {
+        while (this.enemiesArray.length <= 3) {
+            this.enemiesArray.push(new Enemy(this.ctx, this.width, this.height, framesCounter))
+        }
+    },
+
 }

@@ -77,22 +77,4 @@ class Enemy {
         }
 
     }
-
-
-
-
 }
-
-//   move() {
-//       let random = random(500, 300)
-//           (this.posX += this.vel * this.direction)
-//       if (this.posX >= this.gameHeight - 100) {
-//           (this.direction = -1)
-//       }
-//       if (this.posX <= 0) {
-//           (this.direction = 1)
-//       } else if {
-
-
-//       }
-//   }
