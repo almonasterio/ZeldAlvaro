@@ -1,0 +1,17 @@
+class Enemy {
+    constructor() {
+        
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+}

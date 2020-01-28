@@ -11,7 +11,7 @@ const game = {
         DOWN: 83,
         LEFT: 65,
         RIGHT: 68,
-        ATTACK: 32,
+        ATTACK: 88, //32,
     },
 
 
@@ -19,17 +19,13 @@ const game = {
         this.canvas = document.getElementById(`canvas`)
         this.ctx = this.canvas.getContext(`2d`)
 
-        this.width = 700 //window.innerWidth
-        this.height = 700 //window.innerHeight
+        this.width = window.innerWidth
+        this.height = window.innerHeight
 
         this.canvas.width = this.width
         this.canvas.height = this.height
 
         this.start()
-
-
-
-
     },
 
     start() {
@@ -40,16 +36,13 @@ const game = {
                 this.framesCounter = 0;
             }
             this.framesCounter++;
-
             this.clear();
             this.drawAll();
-
         }, 1000 / this.FPS);
     },
 
     reset() {
         this.background = new Background(this.ctx, this.width, this.height)
-
         this.player = new Player(this.ctx, this.width, this.height, this.keys, this.framesCounter)
     },
     clear() {

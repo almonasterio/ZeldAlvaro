@@ -5,7 +5,7 @@ class Background {
         this.height = height;
 
         this.image = new Image()
-        this.image.src = "./images/Wiki-background.png"
+        this.image.src = "./images/grass_14.png"
 
         this.posX = 0
         this.posY = 0
