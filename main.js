@@ -38,12 +38,14 @@ const game = {
             this.framesCounter++;
             this.clear();
             this.drawAll();
+            this.moveAll(this.framesCounter)
         }, 1000 / this.FPS);
     },
 
     reset() {
         this.background = new Background(this.ctx, this.width, this.height)
         this.player = new Player(this.ctx, this.width, this.height, this.keys, this.framesCounter)
+        this.enemy = new Enemy(this.ctx, this.width, this.height, this.framesCounter)
     },
     clear() {
         this.ctx.clearRect(0, 0, this.width, this.height);
@@ -51,9 +53,10 @@ const game = {
 
     drawAll() {
         this.background.draw()
-        this.player.draw(this.framesCounter);
-
-
-
+        this.player.draw();
+        this.enemy.draw();
     },
+    moveAll(framesCounter) {
+        this.enemy.move(framesCounter)
+    }
 }
