@@ -12,7 +12,7 @@ class Enemy {
         this.image = new Image()
         this.image.src = "./images/ghostOnly.png"
 
-        this.vel = 0.7
+        this.vel = 1 * this.random(3, 1)
         this.direction = 1
 
         this.framesX = 2
@@ -76,10 +76,9 @@ class Enemy {
         }
 
     }
-    changeDirection(){
-        this.direction*=-1
+    changeDirection() {
+        this.direction *= -1
     }
 
- 
-}
 
+}

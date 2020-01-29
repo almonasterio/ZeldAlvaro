@@ -16,10 +16,12 @@ const game = {
     enemiesArray: [],
     collisionGhost: false,
     counterHits: 0,
-    life: 100,
+    life: 800,
     flag: false,
     gameOverImg: new Image(),
-
+    colorLife: "red",
+    youWinImg: new Image(),
+    pointsToWin: 1,
 
 
 
@@ -34,12 +36,13 @@ const game = {
         this.canvas.width = this.width
         this.canvas.height = this.height
         this.gameOverImg.src = "./images/kisspng-united-states-fambine-vostochny-cosmodrome-author-game-over-5b0c4d5026ac69.8576348115275328801584.png",
+            this.youWinImg.src = "./images/kisspng-youtube-80-days-video-game-logo-win-5b0c202abef773.4724641315275213227822.png"
 
-
-            this.start()
+        this.start()
     },
 
     start() {
+        const life = this.life
         this.reset()
         this.drawAll();
         this.interval = setInterval(() => {
@@ -51,10 +54,19 @@ const game = {
             this.drawAll(this.framesCounter, this.life);
             this.moveAll()
             this.collisionsGhostPlayer(this.enemiesArray, this.player)
-            this.drawLife()
+            this.drawBoard()
             if (this.life <= 0) {
                 this.gameOver()
+            } else if (this.counterHits === this.pointsToWin) {
+                this.youWin()
             }
+            if (this.life > life / 2) {
+                this.colorLife = "green"
+            } else if (this.life <= life / 2) {
+                this.colorLife = "red"
+            }
+
+
 
         }, 1000 / this.FPS);
     },
@@ -63,7 +75,7 @@ const game = {
     reset() {
         this.background = new Background(this.ctx, this.width, this.height)
         this.player = new Player(this.ctx, this.width, this.height, this.keys, this.framesCounter)
-        this.score = new scoreBoard(this.ctx, this.width, this.height, this.framesCounter)
+        this.score = new scoreBoard(this.ctx, this.width, this.height)
 
 
 
@@ -77,7 +89,7 @@ const game = {
         this.player.draw();
         this.generateEnemies(framesCounter)
         this.enemiesArray.forEach(enemy => enemy.draw(framesCounter))
-        this.score.draw(framesCounter, life)
+
 
     },
     moveAll(framesCounter) {
@@ -97,9 +109,11 @@ const game = {
         ghosts.forEach((ghost, idx) => {
             if ((this.player.attacking) && (this.detectCollisions(ghost, player))) {
                 collidedGhostIndex = idx
+                this.counterHits++
             } else if (this.detectCollisions(ghost, player)) {
                 ghost.changeDirection()
                 this.life -= 100
+
             }
         })
 
@@ -125,29 +139,50 @@ const game = {
             this.height / 2 - this.gameOverImg.height,
             this.gameOverImg.width * 2,
             this.gameOverImg.height * 2,
-        ), 60)
+        ), 1000)
         clearInterval(this.interval)
     },
 
-    drawLife() {
-        const lifeWidth = this.life
-
-        this.ctx.fillStyle = "#e4ddd3";
-        this.ctx.font = '1.8em  "Uncial Antiqua"'
-        this.ctx.fillText("LIFE", this.score.posX, this.score.posY)
-        this.ctx.fillStyle = "red";
-        this.ctx.fillRect(this.score.posX + 90, this.score.posY - 20, this.life, this.score.height);
-
-        this.ctx.lineWidth = this.score.height * 0.2;
-        this.ctx.strokeStyle = "#e4ddd3";
-        this.ctx.strokeRect(this.score.posX + 90, this.score.posY - 20, lifeWidth, this.score.height)
-
+    youWin() {
+        setTimeout(this.ctx.drawImage(
+            this.youWinImg,
+            this.width / 2 - this.youWinImg.width / 2,
+            this.height / 2 - this.youWinImg.height / 2,
+            this.youWinImg.width,
+            this.youWinImg.height,
+        ), 1000000)
+        clearInterval(this.interval)
 
     },
 
-    // killEnemy() {
-    //     if ((this.player.attacking)&&()
-    // },
+    drawBoard() {
+        const lifeWidth = this.life
 
+        this.ctx.fillStyle = "white";
+        this.ctx.font = '2em  "Uncial Antiqua"'
+        this.ctx.fillText("LIFE", this.score.posX, this.score.posY)
+        this.ctx.fillStyle = `${this.colorLife}`;
+        this.ctx.fillRect(this.score.posX + 120, this.score.posY - 20, this.life, this.score.height);
+
+        this.ctx.lineWidth = this.score.height * 0.2;
+        this.ctx.strokeStyle = "bf0202";
+        this.ctx.strokeRect(this.score.posX + 120, this.score.posY - 20, 800, this.score.height);
+
+        this.ctx.fillStyle = "white";
+        this.ctx.font = '2em  "Uncial Antiqua"'
+        this.ctx.fillText(`SCORE: ${this.counterHits}`, this.score.posX, this.score.posY + 40)
+        // this.ctx.fillStyle = `blue`;
+        // this.ctx.fillRect(this.score.posX + 120, this.score.posY + 20, this.counterHits, this.score.height);
+
+        // this.ctx.lineWidth = this.score.height * 0.2;
+        // this.ctx.strokeStyle = "#e4ddd3";
+        // this.ctx.strokeRect(this.score.posX + 120, this.score.posY + 20, this.pointsToWin, this.score.height);
+        this.ctx.fillStyle = "white";
+        this.ctx.font = '1.8em  "Uncial Antiqua"'
+        this.ctx.fillText(`GOAL: ${this.pointsToWin}`, this.pointsToWin + 200, this.score.posY + 40)
+
+
+
+    },
 
 }
