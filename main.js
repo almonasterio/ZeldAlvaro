@@ -14,6 +14,9 @@ const game = {
         ATTACK: 88, //32,
     },
     enemiesArray: [],
+    collisionGhost : false,
+    counterHits: 0,
+
 
 
 
@@ -41,6 +44,7 @@ const game = {
             this.clear();
             this.drawAll(this.framesCounter);
             this.moveAll()
+            this.collisionsGhostPlayer(this.enemiesArray,this.player)
         }, 1000 / this.FPS);
     },
 
@@ -66,8 +70,37 @@ const game = {
         this.enemiesArray.forEach(enemy => enemy.move(framesCounter))
     },
     generateEnemies(framesCounter) {
-        while (this.enemiesArray.length <= 3) {
+        if ((framesCounter % 200 === 0) && (this.enemiesArray.length <= 10)) {
+        // while (this.enemiesArray.length <= 10) {
             this.enemiesArray.push(new Enemy(this.ctx, this.width, this.height, framesCounter))
+        // }
+    }
+    },
+
+    collisionsGhostPlayer(objectArr, object2) {
+        objectArr.forEach(object => {
+          this.collisionGhost = this.detectCollisions(object,object2)
+        })
+
+        console.log(this.collisionGhost)
+        // if (this.collisionGhost=true) {
+        // this.counterHits+=1
+        // // this.collisionGhost=false
+        
+        // }
+
+    },
+
+    detectCollisions(object1, object2) {
+        if (
+            object1.posX + object1.width >= object2.posX &&
+            object1.posX < object2.posX + object2.width &&
+            object1.posY < object2.posY + object2.height &&
+            object1.posY + object1.height > object2.posY
+        ) {
+            this.counterHits+=1
+            console.log(this.counterHits)
+            return true;
         }
     },
 

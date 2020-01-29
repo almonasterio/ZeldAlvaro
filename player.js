@@ -146,41 +146,48 @@ class Player {
 
     animateSword(orientation) {
         this.framesIndexX = 0
-        this.intervalID = setInterval(() => {
-            switch (orientation) {
-                case "DOWN":
-                    this.framesIndexY = 5
-                    if (++this.framesIndexX > 5) {
-                        this.framesIndexX = 0
-                        this.framesIndexY = 0
-                        clearInterval(this.intervalID)
-                    }
-                    break
-                case "UP":
-                    this.framesIndexY = 4
-                    if (++this.framesIndexX > 4) {
-                        this.framesIndexX = 0
-                        this.framesIndexY = 1
-                        clearInterval(this.intervalID)
-                    }
-                    break
-                case "LEFT":
-                    this.framesIndexY = 6
-                    if (++this.framesIndexX > 4) {
-                        this.framesIndexX = 0
-                        this.framesIndexY = 2
-                        clearInterval(this.intervalID)
-                    }
-                    break
-                case "RIGHT":
-                    this.framesIndexY = 7
-                    if (++this.framesIndexX > 4) {
-                        this.framesIndexX = 0
-                        this.framesIndexY = 3
-                        clearInterval(this.intervalID)
-                    }
-                    break
-            }
-        }, 1000 / 20);
+        if (!this.attacking) {
+            this.intervalID = setInterval(() => {
+                this.attacking = true
+                switch (orientation) {
+                    case "DOWN":
+                        this.framesIndexY = 5
+                        if (++this.framesIndexX > 5) {
+                            this.framesIndexX = 0
+                            this.framesIndexY = 0
+                            clearInterval(this.intervalID)
+                        }
+                        break
+                    case "UP":
+                        this.framesIndexY = 4
+                        if (++this.framesIndexX > 4) {
+                            this.framesIndexX = 0
+                            this.framesIndexY = 1
+                            clearInterval(this.intervalID)
+                        }
+                        break
+                    case "LEFT":
+                        this.framesIndexY = 6
+                        if (++this.framesIndexX > 4) {
+                            this.framesIndexX = 0
+                            this.framesIndexY = 2
+                            clearInterval(this.intervalID)
+                        }
+                        break
+                    case "RIGHT":
+                        this.framesIndexY = 7
+                        if (++this.framesIndexX > 4) {
+                            this.framesIndexX = 0
+                            this.framesIndexY = 3
+                            clearInterval(this.intervalID)
+                        }
+                        break
+                }
+            }, 1000 / 20);
+        }
+        this.attacking = false
     }
+
+
+
 }
