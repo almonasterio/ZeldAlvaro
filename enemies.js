@@ -12,7 +12,7 @@ class Enemy {
         this.image = new Image()
         this.image.src = "./images/ghostOnly.png"
 
-        this.vel = 1
+        this.vel = 0.7
         this.direction = 1
 
         this.framesX = 2

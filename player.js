@@ -27,7 +27,7 @@ class Player {
         //orientation
         this.orientation = "DOWN"
         this.velocity = 15
-       
+
         this.eventListeners(framesCounter)
         this.attacking = false
 
@@ -146,14 +146,15 @@ class Player {
     animateSword(orientation) {
         this.framesIndexX = 0
         if (!this.attacking) {
+            this.attacking = true
             this.intervalID = setInterval(() => {
-                this.attacking = true
                 switch (orientation) {
                     case "DOWN":
                         this.framesIndexY = 5
                         if (++this.framesIndexX > 5) {
                             this.framesIndexX = 0
                             this.framesIndexY = 0
+                            this.attacking = false
                             clearInterval(this.intervalID)
                         }
                         break
@@ -162,6 +163,7 @@ class Player {
                         if (++this.framesIndexX > 4) {
                             this.framesIndexX = 0
                             this.framesIndexY = 1
+                            this.attacking = false
                             clearInterval(this.intervalID)
                         }
                         break
@@ -170,6 +172,7 @@ class Player {
                         if (++this.framesIndexX > 4) {
                             this.framesIndexX = 0
                             this.framesIndexY = 2
+                            this.attacking = false
                             clearInterval(this.intervalID)
                         }
                         break
@@ -178,13 +181,15 @@ class Player {
                         if (++this.framesIndexX > 4) {
                             this.framesIndexX = 0
                             this.framesIndexY = 3
+                            this.attacking = false
                             clearInterval(this.intervalID)
                         }
                         break
                 }
             }, 1000 / 20);
         }
-        this.attacking = false
+
+        console.log(this.attacking)
     }
 
 

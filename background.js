@@ -5,7 +5,7 @@ class Background {
         this.height = gameHeight;
 
         this.image = new Image()
-        this.image.src = "./images/Wiki-background.png"
+        this.image.src = "./images/tiledungeon.jpg"
 
         this.posX = 0
         this.posY = 0
