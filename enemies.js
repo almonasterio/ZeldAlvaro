@@ -76,6 +76,9 @@ class Enemy {
         }
 
     }
+    changeDirection(){
+        this.direction*=-1
+    }
 
  
 }

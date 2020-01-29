@@ -14,8 +14,12 @@ const game = {
         ATTACK: 88, //32,
     },
     enemiesArray: [],
-    collisionGhost : false,
+    collisionGhost: false,
     counterHits: 0,
+    life: 99,
+    flag: false,
+    gameOverImg: new Image(),
+
 
 
 
@@ -24,13 +28,15 @@ const game = {
         this.canvas = document.getElementById(`canvas`)
         this.ctx = this.canvas.getContext(`2d`)
 
-        this.width = window.innerWidth
-        this.height = window.innerHeight
+        this.width = 900 //window.innerWidth
+        this.height = 900 //window.innerHeight
 
         this.canvas.width = this.width
         this.canvas.height = this.height
+        this.gameOverImg.src = "./images/gameOver.png",
 
-        this.start()
+
+            this.start()
     },
 
     start() {
@@ -44,9 +50,16 @@ const game = {
             this.clear();
             this.drawAll(this.framesCounter);
             this.moveAll()
-            this.collisionsGhostPlayer(this.enemiesArray,this.player)
+            this.collisionsGhostPlayer(this.enemiesArray, this.player)
+            this.drawLife()
+            if (this.life < 0) {
+                this.gameOver()
+            }
+            console.log(this.life)
+
         }, 1000 / this.FPS);
     },
+
 
     reset() {
         this.background = new Background(this.ctx, this.width, this.height)
@@ -71,37 +84,48 @@ const game = {
     },
     generateEnemies(framesCounter) {
         if ((framesCounter % 200 === 0) && (this.enemiesArray.length <= 10)) {
-        // while (this.enemiesArray.length <= 10) {
+            // while (this.enemiesArray.length <= 10) {
             this.enemiesArray.push(new Enemy(this.ctx, this.width, this.height, framesCounter))
-        // }
-    }
+            // }
+        }
     },
 
-    collisionsGhostPlayer(objectArr, object2) {
-        objectArr.forEach(object => {
-          this.collisionGhost = this.detectCollisions(object,object2)
+    collisionsGhostPlayer(ghosts, player) {
+        ghosts.forEach(ghost => {
+            if (this.detectCollisions(ghost, player)) {
+                ghost.changeDirection()
+                this.life -= 100
+            }
         })
-
-        console.log(this.collisionGhost)
-        // if (this.collisionGhost=true) {
-        // this.counterHits+=1
-        // // this.collisionGhost=false
-        
-        // }
-
     },
 
-    detectCollisions(object1, object2) {
+    detectCollisions(ghost, player) {
         if (
-            object1.posX + object1.width >= object2.posX &&
-            object1.posX < object2.posX + object2.width &&
-            object1.posY < object2.posY + object2.height &&
-            object1.posY + object1.height > object2.posY
+            ghost.posX + ghost.width >= player.posX &&
+            ghost.posX + 30 < player.posX + player.width &&
+            ghost.posY + 50 < player.posY + player.height &&
+            ghost.posY - 50 + ghost.height > player.posY
         ) {
-            this.counterHits+=1
-            console.log(this.counterHits)
             return true;
         }
     },
+
+    drawLife() {
+        this.ctx.fillStyle = "red";
+        this.ctx.fillRect(10, 10, this.life, 20);
+
+    },
+
+    gameOver() {
+        setTimeout(this.ctx.drawImage(
+            this.gameOverImg,
+            this.width / 2 - this.gameOverImg.width / 6,
+            this.height / 2 - this.gameOverImg.height / 6,
+            this.gameOverImg.width / 3,
+            this.gameOverImg.height / 3,
+        ), 1000)
+        clearInterval(this.interval)
+    },
+
 
 }

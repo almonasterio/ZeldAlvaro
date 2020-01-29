@@ -27,13 +27,13 @@ class Player {
         //orientation
         this.orientation = "DOWN"
         this.velocity = 15
+       
         this.eventListeners(framesCounter)
         this.attacking = false
 
     }
 
     draw(framesCounter) {
-
         this.ctx.drawImage(
             this.image,
             this.framesIndexX * Math.floor(this.image.width / this.framesX),
@@ -45,7 +45,6 @@ class Player {
             this.width,
             this.height
         )
-
     }
 
     eventListeners() {
