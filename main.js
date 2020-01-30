@@ -17,6 +17,7 @@ const game = {
     collisionGhost: false,
     counterHits: 0,
     life: 800,
+    lifeConst: 800,
     flag: false,
     gameOverImg: new Image(),
     colorLife: "red",
@@ -60,11 +61,16 @@ const game = {
             } else if (this.counterHits === this.pointsToWin) {
                 this.youWin()
             }
-            if (this.life > life / 2) {
-                this.colorLife = "green"
-            } else if (this.life <= life / 2) {
-                this.colorLife = "red"
+            if (this.life <= this.lifeConst * 0.2) {
+                this.colorLife = "#bf0202"
+            } else if (this.life <= this.lifeConst * 0.4) {
+                this.colorLife = "#ea8e0a"
+            } else if (this.life <= this.lifeConst * 0.6) {
+                this.colorLife = "#90bf45"
+            } else if (this.life > this.lifeConst * 0.8) {
+                this.colorLife = "#2ea937"
             }
+
 
 
 
@@ -146,7 +152,7 @@ const game = {
     youWin() {
         setTimeout(this.ctx.drawImage(
             this.youWinImg,
-            this.width / 2 - this.youWinImg.width / 2,
+            this.width / 2 - this.youWinImg.width / 2-50,
             this.height / 2 - this.youWinImg.height / 2,
             this.youWinImg.width,
             this.youWinImg.height,
@@ -156,7 +162,7 @@ const game = {
     },
 
     drawBoard() {
-        const lifeWidth = this.life
+        const lifeWidth = this.life;
 
         this.ctx.fillStyle = "white";
         this.ctx.font = '2em  "Uncial Antiqua"'
@@ -165,12 +171,12 @@ const game = {
         this.ctx.fillRect(this.score.posX + 120, this.score.posY - 20, this.life, this.score.height);
 
         this.ctx.lineWidth = this.score.height * 0.2;
-        this.ctx.strokeStyle = "bf0202";
-        this.ctx.strokeRect(this.score.posX + 120, this.score.posY - 20, 800, this.score.height);
+        this.ctx.strokeStyle = "white";
+        this.ctx.strokeRect(this.score.posX + 120, this.score.posY - 20, lifeWidth, this.score.height);
 
         this.ctx.fillStyle = "white";
         this.ctx.font = '2em  "Uncial Antiqua"'
-        this.ctx.fillText(`SCORE: ${this.counterHits}`, this.score.posX, this.score.posY + 40)
+        this.ctx.fillText(`SCORE ${this.counterHits}`, this.score.posX, this.score.posY + 40)
         // this.ctx.fillStyle = `blue`;
         // this.ctx.fillRect(this.score.posX + 120, this.score.posY + 20, this.counterHits, this.score.height);
 
@@ -178,8 +184,8 @@ const game = {
         // this.ctx.strokeStyle = "#e4ddd3";
         // this.ctx.strokeRect(this.score.posX + 120, this.score.posY + 20, this.pointsToWin, this.score.height);
         this.ctx.fillStyle = "white";
-        this.ctx.font = '1.8em  "Uncial Antiqua"'
-        this.ctx.fillText(`GOAL: ${this.pointsToWin}`, this.pointsToWin + 200, this.score.posY + 40)
+        this.ctx.font = '2em  "Uncial Antiqua"'
+        this.ctx.fillText(`GOAL ${this.pointsToWin}`, this.pointsToWin + 300, this.score.posY + 40)
 
 
 
