@@ -14,6 +14,7 @@ const game = {
         ATTACK: 32, //32,
     },
     enemiesArray: [],
+    potionArray: [],
     collisionGhost: false,
     counterHits: 0,
     life: 200,
@@ -60,6 +61,7 @@ const game = {
             this.moveAll()
             this.collisionsPlayerGhosts(this.player, this.enemiesArray)
             this.collisionsGhostPlayer(this.enemiesArray, this.player)
+            this.collisionsPlayerPotion(this.player, this.potionArray)
             this.drawBoard()
             if (this.life <= 0) {
                 this.gameOver()
@@ -89,7 +91,6 @@ const game = {
         this.score = new scoreBoard(this.ctx, this.width, this.height)
 
 
-
     },
     clear() {
         this.ctx.clearRect(0, 0, this.width, this.height);
@@ -97,9 +98,12 @@ const game = {
 
     drawAll(framesCounter, life) {
         this.background.draw()
-        this.player.draw();
+        this.generatePotion(framesCounter)
         this.generateEnemies(framesCounter)
+        this.player.draw();
+
         this.enemiesArray.forEach(enemy => enemy.draw(framesCounter))
+        this.potionArray.forEach(potion => potion.draw(framesCounter))
 
 
     },
@@ -112,6 +116,14 @@ const game = {
             this.enemiesArray.push(new Enemy(this.ctx, this.width, this.height, framesCounter))
             // }
         }
+    },
+
+    generatePotion(framesCounter) {
+        if ((framesCounter % 1000 === 0) && (this.life <= this.lifeConst * 0.8)) {
+            this.potionArray.push(new Potion(this.ctx, this.width, this.height, framesCounter))
+        }
+
+
     },
 
     collisionsGhostPlayer(ghosts, player) {
@@ -156,6 +168,35 @@ const game = {
             return true;
         }
     },
+    collisionsPlayerPotion(player, potionArray) {
+        let collidedPotion;
+        potionArray.forEach((potion, idx) => {
+            if (this.detectCollisionsPlayerPotion(player, potion)) {
+                collidedPotion = idx
+                this.life += 200
+                let color = this.colorLife
+                this.colorLife = "#6af24a"
+                setTimeout(() => this.colorLife = color, 1000)
+
+
+                if (this.life > this.lifeConst) {
+                    this.life = this.lifeConst
+                }
+            }
+        })
+        if (collidedPotion !== undefined) potionArray.splice(collidedPotion, 1)
+    },
+    detectCollisionsPlayerPotion(player, potion) {
+        if (
+            player.posX + player.width + 5 >= potion.posX && //ok player attack right
+            player.posX < potion.posX + potion.width && //ok player attack left
+            player.posY - 5 < potion.posY + potion.height && //?ok player attack up
+            player.posY + player.height > potion.posY //ok player attack down
+        ) {
+            return true;
+        }
+    },
+
 
     gameOver() {
         this.ctx.drawImage(

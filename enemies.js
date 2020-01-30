@@ -23,7 +23,7 @@ class Enemy {
         this.dy = 0
 
         this.posX = this.random(this.gameWidth - this.width - 20, 0)
-        this.posY = this.random(this.gameHeight - this.height - 20, 0)
+        this.posY = this.random(this.gameHeight - this.height - 20, 75)
 
         this.widthRdm = this.width * this.random(3, 2)
         this.heightRdm = this.height * this.random(3, 2)
