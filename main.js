@@ -16,13 +16,17 @@ const game = {
     enemiesArray: [],
     collisionGhost: false,
     counterHits: 0,
-    life: 800,
-    lifeConst: 800,
+    life: 200,
+    lifeConst: 200,
     flag: false,
     gameOverImg: new Image(),
     colorLife: "red",
     youWinImg: new Image(),
-    pointsToWin: 1,
+    pointsToWin: 10,
+    level: 0,
+
+
+
 
 
 
@@ -54,6 +58,7 @@ const game = {
             this.clear();
             this.drawAll(this.framesCounter, this.life);
             this.moveAll()
+            this.collisionsPlayerGhosts(this.player, this.enemiesArray)
             this.collisionsGhostPlayer(this.enemiesArray, this.player)
             this.drawBoard()
             if (this.life <= 0) {
@@ -110,54 +115,71 @@ const game = {
     },
 
     collisionsGhostPlayer(ghosts, player) {
-        let collidedGhostIndex;
-
         ghosts.forEach((ghost, idx) => {
-            if ((this.player.attacking) && (this.detectCollisions(ghost, player))) {
-                collidedGhostIndex = idx
-                this.counterHits++
-            } else if (this.detectCollisions(ghost, player)) {
+            if (this.detectCollisionsGhostPlayer(ghost, player)) {
                 ghost.changeDirection()
-                this.life -= 100
+                this.life -= 10
+                if (this.life < 0) {
+                    this.life = 0
+                }
 
             }
         })
-
+    },
+    detectCollisionsGhostPlayer(ghost, player) {
+        if (
+            ghost.posX + ghost.width - 20 >= player.posX && //ghost left player right ok
+            ghost.posX + 40 < player.posX + player.width && //ghost right player left ok
+            ghost.posY + 40 < player.posY + player.height && //ghost hitting from below OK
+            ghost.posY + ghost.height > player.posY + 20 //ghost hitting from top OK
+        ) {
+            return true;
+        }
+    },
+    collisionsPlayerGhosts(player, ghosts) {
+        let collidedGhostIndex;
+        ghosts.forEach((ghost, idx) => {
+            if ((this.player.attacking) && (this.detectCollisionsPlayerGhosts(player, ghost))) {
+                collidedGhostIndex = idx
+                this.counterHits++
+            }
+        })
         if (collidedGhostIndex !== undefined) ghosts.splice(collidedGhostIndex, 1)
     },
-
-
-    detectCollisions(ghost, player) {
+    detectCollisionsPlayerGhosts(player, ghost) {
         if (
-            ghost.posX + ghost.width >= player.posX &&
-            ghost.posX + 10 < player.posX + player.width &&
-            ghost.posY + 50 < player.posY + player.height &&
-            ghost.posY - 50 + ghost.height > player.posY
+            player.posX + player.width + 5 >= ghost.posX && //ok player attack right
+            player.posX < ghost.posX + ghost.width && //ok player attack left
+            player.posY - 5 < ghost.posY + ghost.height && //?ok player attack up
+            player.posY + player.height > ghost.posY //ok player attack down
         ) {
             return true;
         }
     },
 
     gameOver() {
-        setTimeout(this.ctx.drawImage(
+        this.ctx.drawImage(
             this.gameOverImg,
             this.width / 2 - this.gameOverImg.width + 20,
             this.height / 2 - this.gameOverImg.height,
             this.gameOverImg.width * 2,
             this.gameOverImg.height * 2,
-        ), 1000)
-        clearInterval(this.interval)
+        )
+        setTimeout(() => clearInterval(this.interval), 500)
     },
 
     youWin() {
-        setTimeout(this.ctx.drawImage(
+
+
+        setTimeout(() => clearInterval(this.interval), 2000)
+        this.ctx.drawImage(
             this.youWinImg,
-            this.width / 2 - this.youWinImg.width / 2-50,
+            this.width / 2 - this.youWinImg.width / 2 - 50,
             this.height / 2 - this.youWinImg.height / 2,
             this.youWinImg.width,
-            this.youWinImg.height,
-        ), 1000000)
-        clearInterval(this.interval)
+            this.youWinImg.height)
+
+
 
     },
 
@@ -190,5 +212,12 @@ const game = {
 
 
     },
+
+
+
+
+
+
+
 
 }
