@@ -144,6 +144,9 @@ class Player {
     }
 
     animateSword(orientation) {
+        this.audioSword = new Sound('./sounds/master sword.wav');
+        this.audioSword.play()
+
         this.framesIndexX = 0
         if (!this.attacking) {
             this.attacking = true

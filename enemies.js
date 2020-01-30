@@ -12,12 +12,12 @@ class Enemy {
         this.image = new Image()
         this.image.src = "./images/ghostOnly.png"
 
-        this.vel = 1 * this.random(3, 1)
+        this.vel = 1 // * this.random(2, 1)
         this.direction = 1
 
         this.framesX = 2
         this.framesY = 2
-        // this.dx = this.width/this.framesX;
+
 
         this.dx = 0
         this.dy = 0
@@ -67,7 +67,7 @@ class Enemy {
     }
 
     move() {
-        (this.posX += this.vel * this.direction * this.random(5, 1.5))
+        (this.posX += this.vel * this.direction) //* this.random(5, 1.5)
         if ((this.posX >= this.gameWidth - 50)) { //|| (this.PosX <random)) { *Math.random()
             this.direction = -1
         }

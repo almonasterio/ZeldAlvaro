@@ -17,13 +17,14 @@ const game = {
     potionArray: [],
     collisionGhost: false,
     counterHits: 0,
-    life: 200,
-    lifeConst: 200,
+    lifeConst: 800,
+    life: 800,
+
     flag: false,
     gameOverImg: new Image(),
     colorLife: "red",
     youWinImg: new Image(),
-    pointsToWin: 10,
+    pointsToWin: 20,
     level: 0,
 
 
@@ -35,14 +36,19 @@ const game = {
     init() {
         this.canvas = document.getElementById(`canvas`)
         this.ctx = this.canvas.getContext(`2d`)
+        // this.audioIntro = new Sound('./sounds/Intro-theme.mp3');
+        // this.audioIntro.play()
 
-        this.width = 1000 //window.innerWidth
-        this.height = 1000 //window.innerHeight
+        // setTimeout(() => this.audioIntro.pause(), 10000)
+
+
+        this.width = 800 //window.innerWidth
+        this.height = 800 //window.innerHeight
 
         this.canvas.width = this.width
         this.canvas.height = this.height
-        this.gameOverImg.src = "./images/kisspng-united-states-fambine-vostochny-cosmodrome-author-game-over-5b0c4d5026ac69.8576348115275328801584.png",
-            this.youWinImg.src = "./images/kisspng-youtube-80-days-video-game-logo-win-5b0c202abef773.4724641315275213227822.png"
+        this.gameOverImg.src = "./images/gameover.png",
+        this.youWinImg.src = "./images/kisspng-youtube-80-days-video-game-logo-win-5b0c202abef773.4724641315275213227822.png"
 
         this.start()
     },
@@ -50,7 +56,12 @@ const game = {
     start() {
         const life = this.life
         this.reset()
-        this.drawAll();
+        this.drawAll()
+
+
+        this.audioMain.play()
+
+
         this.interval = setInterval(() => {
             if (this.framesCounter > 5000) {
                 this.framesCounter = 0;
@@ -63,6 +74,8 @@ const game = {
             this.collisionsGhostPlayer(this.enemiesArray, this.player)
             this.collisionsPlayerPotion(this.player, this.potionArray)
             this.drawBoard()
+
+
             if (this.life <= 0) {
                 this.gameOver()
             } else if (this.counterHits === this.pointsToWin) {
@@ -89,6 +102,15 @@ const game = {
         this.background = new Background(this.ctx, this.width, this.height)
         this.player = new Player(this.ctx, this.width, this.height, this.keys, this.framesCounter)
         this.score = new scoreBoard(this.ctx, this.width, this.height)
+        this.audioLinkDies = new Sound('./sounds/link dies.wav')
+        this.audioGameOver = new Sound('./sounds/Game Over Dracula Second Battle.wav');
+        this.audioMain = new Sound('./sounds/Main-theme.mp3');
+        this.audioGhostCollision = new Sound('./sounds/link hurt.wav');
+        this.audioGhostKilled = new Sound('./sounds/enemy dies.wav');
+        this.audioItem = new Sound('./sounds/item get 1.wav');
+        this.audioPotion = new Sound('./sounds/item get 1.wav');
+        this.audioLowHP = new Sound('./sounds/low hp.wav');
+        this.audioWin = new Sound('./sounds/secret-sound.mp3');
 
 
     },
@@ -108,7 +130,28 @@ const game = {
 
     },
     moveAll(framesCounter) {
-        this.enemiesArray.forEach(enemy => enemy.move(framesCounter))
+        this.enemiesArray.forEach(enemy => enemy.move())
+        this.enemiesArray.forEach(enemy => {
+            if (enemy.posY < this.player.posY) {
+                enemy.posY += enemy.vel
+            }
+            if (enemy.posY > this.player.posY) {
+                enemy.posY -= enemy.vel
+            }
+            if (enemy.posX < this.player.posX) {
+                enemy.posX += enemy.vel
+            }
+            if (enemy.posX > this.player.posX) {
+                enemy.posX -= enemy.vel
+            }
+
+        });
+
+
+
+
+
+
     },
     generateEnemies(framesCounter) {
         if ((framesCounter % 200 === 0) && (this.enemiesArray.length <= 10)) {
@@ -129,8 +172,10 @@ const game = {
     collisionsGhostPlayer(ghosts, player) {
         ghosts.forEach((ghost, idx) => {
             if (this.detectCollisionsGhostPlayer(ghost, player)) {
+
+                this.audioGhostCollision.play()
                 ghost.changeDirection()
-                this.life -= 10
+                this.life -= 100
                 if (this.life < 0) {
                     this.life = 0
                 }
@@ -154,6 +199,8 @@ const game = {
             if ((this.player.attacking) && (this.detectCollisionsPlayerGhosts(player, ghost))) {
                 collidedGhostIndex = idx
                 this.counterHits++
+
+                this.audioGhostKilled.play()
             }
         })
         if (collidedGhostIndex !== undefined) ghosts.splice(collidedGhostIndex, 1)
@@ -176,6 +223,7 @@ const game = {
                 this.life += 200
                 let color = this.colorLife
                 this.colorLife = "#6af24a"
+                this.audioPotion.play()
                 setTimeout(() => this.colorLife = color, 1000)
 
 
@@ -199,26 +247,37 @@ const game = {
 
 
     gameOver() {
+        this.audioMain.pause()
+        this.audioLinkDies.play()
+
+
+        setTimeout(() => this.audioGameOver.play(), 500)
+
+
         this.ctx.drawImage(
             this.gameOverImg,
-            this.width / 2 - this.gameOverImg.width + 20,
-            this.height / 2 - this.gameOverImg.height,
-            this.gameOverImg.width * 2,
-            this.gameOverImg.height * 2,
+            this.width / 2 - this.gameOverImg.width / 2 + 20,
+            this.height / 2 - this.gameOverImg.height / 2,
+            this.gameOverImg.width,
+            this.gameOverImg.height,
         )
         setTimeout(() => clearInterval(this.interval), 500)
     },
 
     youWin() {
+        this.audioWin.play();
+        setTimeout(() => this.audioMain.play(), 1000)
 
 
-        setTimeout(() => clearInterval(this.interval), 2000)
+
+
+        setTimeout(() => clearInterval(this.interval), 500)
         this.ctx.drawImage(
             this.youWinImg,
-            this.width / 2 - this.youWinImg.width / 2 - 50,
-            this.height / 2 - this.youWinImg.height / 2,
-            this.youWinImg.width,
-            this.youWinImg.height)
+            this.width / 2 - this.youWinImg.width / 4,
+            this.height / 2 - this.youWinImg.height / 4,
+            this.youWinImg.width / 2,
+            this.youWinImg.height / 2)
 
 
 
