@@ -9,6 +9,8 @@ class scoreBoard {
         this.gameHeight = gameHeight
         this.posX = 30
         this.posY = 40
+        this.ghostImage =new Image()
+        this.ghostImage.src ="./images/ghostone copy.png"
 
     }
 

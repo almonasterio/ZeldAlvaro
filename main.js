@@ -17,14 +17,14 @@ const game = {
     potionArray: [],
     collisionGhost: false,
     counterHits: 0,
-    lifeConst: 800,
-    life: 800,
+    lifeConst: 600,
+    life: 600,
 
     flag: false,
     gameOverImg: new Image(),
     colorLife: "red",
     youWinImg: new Image(),
-    pointsToWin: 20,
+    pointsToWin: 1,
     level: 0,
 
 
@@ -36,7 +36,7 @@ const game = {
     init() {
         this.canvas = document.getElementById(`canvas`)
         this.ctx = this.canvas.getContext(`2d`)
-        // this.audioIntro = new Sound('./sounds/Intro-theme.mp3');
+
         // this.audioIntro.play()
 
         // setTimeout(() => this.audioIntro.pause(), 10000)
@@ -48,7 +48,7 @@ const game = {
         this.canvas.width = this.width
         this.canvas.height = this.height
         this.gameOverImg.src = "./images/gameover.png",
-        this.youWinImg.src = "./images/kisspng-youtube-80-days-video-game-logo-win-5b0c202abef773.4724641315275213227822.png"
+            this.youWinImg.src = "./images/kisspng-youtube-80-days-video-game-logo-win-5b0c202abef773.4724641315275213227822.png"
 
         this.start()
     },
@@ -83,9 +83,9 @@ const game = {
             }
             if (this.life <= this.lifeConst * 0.2) {
                 this.colorLife = "#bf0202"
-            } else if (this.life <= this.lifeConst * 0.4) {
+            } else if (this.life <= this.lifeConst * 0.5) {
                 this.colorLife = "#ea8e0a"
-            } else if (this.life <= this.lifeConst * 0.6) {
+            } else if (this.life <= this.lifeConst * 0.8) {
                 this.colorLife = "#90bf45"
             } else if (this.life > this.lifeConst * 0.8) {
                 this.colorLife = "#2ea937"
@@ -111,6 +111,7 @@ const game = {
         this.audioPotion = new Sound('./sounds/item get 1.wav');
         this.audioLowHP = new Sound('./sounds/low hp.wav');
         this.audioWin = new Sound('./sounds/secret-sound.mp3');
+        this.audioIntro = new Sound('./sounds/Intro-theme.mp3');
 
 
     },
@@ -131,26 +132,6 @@ const game = {
     },
     moveAll(framesCounter) {
         this.enemiesArray.forEach(enemy => enemy.move())
-        this.enemiesArray.forEach(enemy => {
-            if (enemy.posY < this.player.posY) {
-                enemy.posY += enemy.vel
-            }
-            if (enemy.posY > this.player.posY) {
-                enemy.posY -= enemy.vel
-            }
-            if (enemy.posX < this.player.posX) {
-                enemy.posX += enemy.vel
-            }
-            if (enemy.posX > this.player.posX) {
-                enemy.posX -= enemy.vel
-            }
-
-        });
-
-
-
-
-
 
     },
     generateEnemies(framesCounter) {
@@ -265,19 +246,21 @@ const game = {
     },
 
     youWin() {
-        this.audioWin.play();
-        setTimeout(() => this.audioMain.play(), 1000)
-
-
-
-
+        this.audioMain.pause();
+        this.audioIntro.play()
         setTimeout(() => clearInterval(this.interval), 500)
-        this.ctx.drawImage(
-            this.youWinImg,
-            this.width / 2 - this.youWinImg.width / 4,
-            this.height / 2 - this.youWinImg.height / 4,
-            this.youWinImg.width / 2,
-            this.youWinImg.height / 2)
+
+
+        setTimeout(() => {
+            this.ctx.drawImage(
+                this.youWinImg,
+                this.width / 2 - this.youWinImg.width / 4,
+                this.height / 2 - this.youWinImg.height / 4,
+                this.youWinImg.width / 2,
+                this.youWinImg.height / 2)
+        }, 1000)
+
+
 
 
 
@@ -299,7 +282,8 @@ const game = {
         this.ctx.fillStyle = "white";
         this.ctx.font = '2em  "Uncial Antiqua"'
         this.ctx.fillText(`SCORE ${this.counterHits}`, this.score.posX, this.score.posY + 40)
-        // this.ctx.fillStyle = `blue`;
+
+        this.ctx.drawImage(this.score.ghostImage, this.score.posX + 180, this.score.posY + 10, 40, 40)
         // this.ctx.fillRect(this.score.posX + 120, this.score.posY + 20, this.counterHits, this.score.height);
 
         // this.ctx.lineWidth = this.score.height * 0.2;
