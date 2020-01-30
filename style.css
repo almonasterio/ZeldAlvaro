@@ -12,11 +12,11 @@ body {
 }
 
 .container {
-   display: flex;
-   flex-direction: column;
-    justify-content: center;
-  
-   align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  align-items: center;
 
 }
 
@@ -26,7 +26,8 @@ body h1 {
 }
 
 body button {
-
+  /* background-image: url("/images/Wiki-background.png");
+  background-size: cover; */
   font-size: 40px;
   background: rgb(82, 78, 78);
   color: #fff;
@@ -45,12 +46,24 @@ img {
 
 #game-board {
   display: flex;
+  justify-content: center;
   text-align: center;
 }
 
-canvas {
+#canvass {
   /* border:10px solid black;
   background-color: black; */
-  margin: 20px 150px 20px 10px;
+  margin: 30px;
 
 }
+
+#gameover {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+

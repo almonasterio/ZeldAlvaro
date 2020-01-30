@@ -17,8 +17,8 @@ const game = {
     potionArray: [],
     collisionGhost: false,
     counterHits: 0,
-    lifeConst: 600,
-    life: 600,
+    lifeConst: 500,
+    life: 500,
 
     flag: false,
     gameOverImg: new Image(),
@@ -34,7 +34,7 @@ const game = {
 
 
     init() {
-        this.canvas = document.getElementById(`canvas`)
+        this.canvas = document.getElementById(`canvass`)
         this.ctx = this.canvas.getContext(`2d`)
 
         // this.audioIntro.play()
@@ -48,8 +48,7 @@ const game = {
         this.canvas.width = this.width
         this.canvas.height = this.height
         this.gameOverImg.src = "./images/gameover.png",
-            this.youWinImg.src = "./images/kisspng-youtube-80-days-video-game-logo-win-5b0c202abef773.4724641315275213227822.png"
-
+            this.youWinImg.src = "./images/link victory thug.png"
         this.start()
     },
 
@@ -59,7 +58,7 @@ const game = {
         this.drawAll()
 
 
-        this.audioMain.play()
+
 
 
         this.interval = setInterval(() => {
@@ -76,19 +75,31 @@ const game = {
             this.drawBoard()
 
 
-            if (this.life <= 0) {
-                this.gameOver()
-            } else if (this.counterHits === this.pointsToWin) {
-                this.youWin()
-            }
-            if (this.life <= this.lifeConst * 0.2) {
+
+            if (this.life <= this.lifeConst * 0.3) {
                 this.colorLife = "#bf0202"
+                this.audioLowHP.play()
             } else if (this.life <= this.lifeConst * 0.5) {
                 this.colorLife = "#ea8e0a"
             } else if (this.life <= this.lifeConst * 0.8) {
                 this.colorLife = "#90bf45"
             } else if (this.life > this.lifeConst * 0.8) {
                 this.colorLife = "#2ea937"
+            }
+
+            if (this.life > this.lifeConst * 0.5) {
+                this.audioMain.pause()
+                this.audioIntro.play()
+            } else {
+                this.audioMain.play()
+                this.audioIntro.pause()
+            }
+            if (this.life <= 0) {
+
+                this.gameOver()
+            } else if (this.counterHits === this.pointsToWin) {
+                this.audioIntro.pause();
+                this.youWin()
             }
 
 
@@ -102,6 +113,7 @@ const game = {
         this.background = new Background(this.ctx, this.width, this.height)
         this.player = new Player(this.ctx, this.width, this.height, this.keys, this.framesCounter)
         this.score = new scoreBoard(this.ctx, this.width, this.height)
+
         this.audioLinkDies = new Sound('./sounds/link dies.wav')
         this.audioGameOver = new Sound('./sounds/Game Over Dracula Second Battle.wav');
         this.audioMain = new Sound('./sounds/Main-theme.mp3');
@@ -111,8 +123,8 @@ const game = {
         this.audioPotion = new Sound('./sounds/item get 1.wav');
         this.audioLowHP = new Sound('./sounds/low hp.wav');
         this.audioWin = new Sound('./sounds/secret-sound.mp3');
-        this.audioIntro = new Sound('./sounds/Intro-theme.mp3');
-
+        this.audioIntro = new Sound('./sounds/IntroTheme.mp3');
+        this.audioThug = new Sound("./sounds/thug life sound effect.mp3")
 
     },
     clear() {
@@ -225,6 +237,15 @@ const game = {
             return true;
         }
     },
+    restart() {
+        this.enemiesArray = []
+        this.potionArray = []
+        this.collisionGhost = false
+        this.counterHits = 0
+        this.lifeConst = 100
+        this.life = 100
+
+    },
 
 
     gameOver() {
@@ -243,22 +264,48 @@ const game = {
             this.gameOverImg.height,
         )
         setTimeout(() => clearInterval(this.interval), 500)
+
+        setTimeout(() => {
+                document.getElementById('gameover').style.display = 'flex'
+                document.getElementById('canvass').style.display = 'none'
+            },
+            3000)
+
+
     },
 
     youWin() {
-        this.audioMain.pause();
-        this.audioIntro.play()
-        setTimeout(() => clearInterval(this.interval), 500)
+        this.audioIntro.pause();
+
+        setTimeout(() => clearInterval(this.interval), 900)
 
 
         setTimeout(() => {
+            this.audioIntro.pause()
             this.ctx.drawImage(
                 this.youWinImg,
-                this.width / 2 - this.youWinImg.width / 4,
-                this.height / 2 - this.youWinImg.height / 4,
-                this.youWinImg.width / 2,
-                this.youWinImg.height / 2)
+                this.width / 2 - this.youWinImg.width / 2,
+                this.height / 2 - this.youWinImg.height / 3,
+                this.youWinImg.width,
+                this.youWinImg.height)
+            this.audioThug.play()
         }, 1000)
+
+
+
+
+        setTimeout(() => {
+                this.audioThug.pause()
+                document.getElementById('gameover').style.display = 'flex'
+                document.getElementById('canvass').style.display = 'none'
+
+
+
+            },
+            5000)
+
+
+
 
 
 
