@@ -67,7 +67,7 @@ class Enemy {
     }
 
     move() {
-        (this.posX += this.vel * this.direction * this.random(5, 1.5)) //
+        (this.posX += this.vel * this.direction * this.random(3, 1.5)) //
         if ((this.posX >= this.gameWidth - 50)) { //|| (this.PosX <random)) { *Math.random()
             this.direction = -1
         }
@@ -78,6 +78,7 @@ class Enemy {
     }
     changeDirection() {
         this.direction *= -1
+
     }
 
 
