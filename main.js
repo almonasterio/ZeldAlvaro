@@ -24,14 +24,17 @@ const game = {
     gameOverImg: new Image(),
     colorLife: "red",
     youWinImg: new Image(),
-    pointsToWin: 20,
+    pointsToWin: 1,
     level: 0,
 
 
+    keyImg: new Image(),
+    key: {
 
+        width: 60,
+        height: 70,
 
-
-
+    },
 
     init() {
         this.canvas = document.getElementById(`canvass`)
@@ -47,8 +50,9 @@ const game = {
 
         this.canvas.width = this.width
         this.canvas.height = this.height
-        this.gameOverImg.src = "./images/gameover.png",
-            this.youWinImg.src = "./images/link victory thug.png"
+        this.gameOverImg.src = "./images/gameover.png"
+        this.youWinImg.src = "./images/link victory thug.png"
+        this.keyImg.src = "./images/key.png"
         this.start()
     },
 
@@ -66,13 +70,14 @@ const game = {
                 this.framesCounter = 0;
             }
             this.framesCounter++;
-            this.clear();
+            this.clear()
             this.drawAll(this.framesCounter, this.life);
             this.moveAll()
             this.collisionsPlayerGhosts(this.player, this.enemiesArray)
             this.collisionsGhostPlayer(this.enemiesArray, this.player)
             this.collisionsPlayerPotion(this.player, this.potionArray)
             this.drawBoard()
+
 
 
 
@@ -95,18 +100,59 @@ const game = {
                 this.audioIntro.pause()
             }
             if (this.life <= 0) {
-
                 this.gameOver()
             } else if (this.counterHits === this.pointsToWin) {
-                this.audioIntro.pause();
-                this.youWin()
+                this.keyFound()
             }
+
+
 
 
 
 
         }, 1000 / this.FPS);
     },
+
+    detectCollisionsPlayerKey(player, key) {
+        this.key.posX = this.width / 2 - 30
+        this.key.posY = this.height / 2 - 35
+
+        if (
+            player.posX + player.width + 5 >= key.posX && //ok player attack right
+            player.posX < key.posX + key.width && //ok player attack left
+            player.posY - 5 < key.posY + key.height && //?ok player attack up
+            player.posY + player.height > key.posY //ok player attack down
+        ) {
+            return true;
+        }
+    },
+
+    keyAppears() {
+        this.ctx.drawImage(
+            this.keyImg,
+            this.width / 2 - this.keyImg.width / (2 * 3),
+            this.height / 2 - this.keyImg.height / (2 * 3),
+            this.keyImg.width / 3,
+            this.keyImg.height / 3,
+        )
+    },
+
+    keyFound() {
+        this.keyAppears()
+        if (this.detectCollisionsPlayerKey(this.player, this.key)) {
+
+            this.keyImg = {}
+            this.audioItem.play()
+            setTimeout(() => {
+                
+                this.audioIntro.pause()
+                this.youWin()
+            },  500)
+        }
+    },
+
+
+    //
 
 
     reset() {
