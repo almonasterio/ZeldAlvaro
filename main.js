@@ -101,7 +101,7 @@ const game = {
             }
             if (this.life <= 0) {
                 this.gameOver()
-            } else if (this.counterHits === this.pointsToWin) {
+            } else if (this.counterHits >= this.pointsToWin) {
                 this.keyFound()
             }
 
@@ -143,22 +143,32 @@ const game = {
 
             this.keyImg = {}
             this.audioItem.play()
-            setTimeout(() => {
-                
-                this.audioIntro.pause()
-                this.youWin()
-            },  500)
+
+            this.doorOpens()
+
         }
     },
 
+    doorOpens() {
+        this.door.open = true
 
-    //
+        setTimeout(() => {
+
+            this.audioIntro.pause()
+            this.youWin()
+        }, 2000)
+
+
+
+    },
 
 
     reset() {
         this.background = new Background(this.ctx, this.width, this.height)
         this.player = new Player(this.ctx, this.width, this.height, this.keys, this.framesCounter)
         this.score = new scoreBoard(this.ctx, this.width, this.height)
+        this.door = new Door(this.ctx, this.width, this.height, this.framesCounter)
+
 
         this.audioLinkDies = new Sound('./sounds/link dies.wav')
         this.audioGameOver = new Sound('./sounds/Game Over Dracula Second Battle.wav');
@@ -181,10 +191,18 @@ const game = {
         this.background.draw()
         this.generatePotion(framesCounter)
         this.generateEnemies(framesCounter)
+        if (this.door.open) {
+            this.door.draw()
+            setTimeout(() => {
+                this.door.animate(this.framesCounter)
+            }, 200)
+        }
         this.player.draw();
+
 
         this.enemiesArray.forEach(enemy => enemy.draw(framesCounter))
         this.potionArray.forEach(potion => potion.draw(framesCounter))
+
 
 
     },
@@ -283,14 +301,15 @@ const game = {
             return true;
         }
     },
+
     restart() {
         this.enemiesArray = []
         this.potionArray = []
         this.collisionGhost = false
         this.counterHits = 0
-        this.lifeConst = 500
-        this.life = 500
-
+        this.lifeConst = 600
+        this.life = 600
+        this.keyImg = new Image()
     },
 
 
@@ -298,9 +317,7 @@ const game = {
         this.audioMain.pause()
         this.audioLinkDies.play()
 
-
         setTimeout(() => this.audioGameOver.play(), 500)
-
 
         this.ctx.drawImage(
             this.gameOverImg,
@@ -312,19 +329,15 @@ const game = {
         setTimeout(() => clearInterval(this.interval), 500)
 
         setTimeout(() => {
-                document.getElementById('gameover').style.display = 'flex'
-                document.getElementById('canvass').style.display = 'none'
-            },
-            3000)
-
-
+            document.getElementById('gameover').style.display = 'flex'
+            document.getElementById('canvass').style.display = 'none'
+        }, 3000)
     },
 
     youWin() {
         this.audioIntro.pause();
 
         setTimeout(() => clearInterval(this.interval), 900)
-
 
         setTimeout(() => {
             this.audioIntro.pause()
@@ -336,9 +349,6 @@ const game = {
                 this.youWinImg.height)
             this.audioThug.play()
         }, 1000)
-
-
-
 
         setTimeout(() => {
                 this.audioThug.pause()

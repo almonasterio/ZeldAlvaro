@@ -1,6 +1,6 @@
 window.onload = function () {
 
- 
+
   document.getElementById('gameover').style.display = 'none'
   document.getElementById('canvass').style.display = 'none'
   document.getElementById("start-button").onclick = function () {
