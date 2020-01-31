@@ -24,7 +24,7 @@ const game = {
     gameOverImg: new Image(),
     colorLife: "red",
     youWinImg: new Image(),
-    pointsToWin: 1,
+    pointsToWin: 10,
     level: 0,
 
 
