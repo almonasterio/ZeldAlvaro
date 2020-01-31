@@ -24,7 +24,7 @@ const game = {
     gameOverImg: new Image(),
     colorLife: "red",
     youWinImg: new Image(),
-    pointsToWin: 1,
+    pointsToWin: 20,
     level: 0,
 
 
@@ -242,8 +242,8 @@ const game = {
         this.potionArray = []
         this.collisionGhost = false
         this.counterHits = 0
-        this.lifeConst = 100
-        this.life = 100
+        this.lifeConst = 500
+        this.life = 500
 
     },
 

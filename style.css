@@ -35,13 +35,12 @@ body button {
   border: 0;
   box-shadow: 0;
   border-radius: 20px;
-  margin: 30px 0;
+  margin: 10px 0;
 }
 
-img {
-  text-align: left;
-  max-width: 100%;
-  margin: 80px 0;
+.mainImg {
+  width:700px;
+  margin: 50px 0 20px 0;
 }
 
 #game-board {
@@ -63,6 +62,28 @@ img {
   justify-content: center;
   align-items: center;
 }
+
+#keyboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+
+
+}
+
+#arrow {
+  width:300px ;
+  margin: 0 50px;
+
+}
+
+#spacebar {
+  width: 500px;
+  margin: 0 50px;
+
+}
+
 
 
 
