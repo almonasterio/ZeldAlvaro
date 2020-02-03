@@ -1,6 +1,6 @@
 class Potion {
     constructor(ctx, gameWidth, gameHeight,framesCounter) {
-
+debugger.
         this.ctx = ctx
         this.width = 50
         this.height = 50
