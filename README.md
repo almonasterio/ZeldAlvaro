@@ -6,7 +6,7 @@ ZeldAlvaro
 <p align="center"><img src="https://github.com/almonasterio/projectGameIH/blob/master/images/screenshot1.png" width="600"/></p>
 
 <h2 align="center">
-  A Zelda mini-game
+  A Zelda mini-game:  [Try it](https://almonasterio.github.io/projectGameIH/).
 </h2>
 
 
