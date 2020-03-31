@@ -1,5 +1,5 @@
 <h1 align="left">
-IronHack Game Project: ZeldAlvaro
+ZeldAlvaro
 </h1>
 
 
