@@ -9,10 +9,8 @@ ZeldAlvaro
   A Zelda mini-game: 
 </h2>
 
- [Play](https://almonasterio.github.io/projectGameIH/).
 
-
-ZeldAlvaro — It's a mini-game built for my first project during the Full Stack Web Development Bootcamp at [Ironhack Madrid](https://www.ironhack.com/).
+[ZeldAlvaro](https://almonasterio.github.io/projectGameIH/) — It's a mini-game built for my first project during the Full Stack Web Development Bootcamp at [Ironhack Madrid](https://www.ironhack.com/).
 
 ### Built With:
 
