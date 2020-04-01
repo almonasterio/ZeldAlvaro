@@ -10,7 +10,7 @@ ZeldAlvaro
 </h2>
 
 
-[ZeldAlvaro](https://almonasterio.github.io/projectGameIH/) — It's a mini-game built for my first project during the Full Stack Web Development Bootcamp at [Ironhack Madrid](https://www.ironhack.com/).
+[ZeldAlvaro](https://almonasterio.github.io/ZeldAlvaro/) — It's a mini-game built for my first project during the Full Stack Web Development Bootcamp at [Ironhack Madrid](https://www.ironhack.com/).
 
 ### Built With:
 
